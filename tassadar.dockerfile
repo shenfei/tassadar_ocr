@@ -1,6 +1,7 @@
 FROM ubuntu:18.04
 ENV LANG=C.UTF-8
 ARG APT_INSTALL="apt-get install -y --no-install-recommends"
+ARG GIT_CLONE="git clone --depth 10"
 ARG THRIFT_VERSION="0.11.0"
 ARG TESSDATA_GIT_SHA="590567f20dc044f6948a8e2c61afc714c360ad0e"
 
@@ -20,6 +21,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive ${APT_INSTALL} \
         make \
         curl \
         pkg-config \
+        python3-pip \
         tesseract-ocr \
         libtesseract-dev
 
@@ -33,6 +35,10 @@ RUN cd /root/ && \
         ./configure --without-qt4 --without-qt5 --without-csharp --without-erlang --without-nodejs --without-lua --without-perl --without-php --without-php_extention --without-dart --without-ruby --without-haskell --without-rs --without-haxe --without-dotnetcore --without-d && \
         make -j2 && make install
 
+RUN ${GIT_CLONE} https://github.com/shenfei/tassadar_ocr.git /root/tassadar_ocr && \
+        cd /root/tassadar_ocr && make
+RUN pip3 --no-cache-dir install setuptools
+RUN pip3 --no-cache-dir install -e /root/tassadar_ocr/python/
 
 RUN rm -rf /root/thrift-${THRIFT_VERSION}*
 RUN ldconfig && \
