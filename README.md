@@ -69,7 +69,7 @@ The original tassadar project was developed during 2014 to 2016 in Uda Inc., a s
 I chose the name `tassadar` because it's similar to `tessearct` and all project names in Uda were picked from [StarCraft](https://starcraft.com/en-us/) at that moment.
 
 Most of the outdated codes are removed, such as preprocessing via OpenCV, single character classification via [Caffee](https://github.com/BVLC/caffe), etc.
-But I still thanks to those original contributors:
+But I still thank those original contributors:
 
 - [shenfei](https://github.com/shenfei)
 - [Linusp](https://github.com/Linusp)
