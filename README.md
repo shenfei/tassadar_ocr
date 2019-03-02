@@ -8,7 +8,7 @@ Tassadar is an OCR service based on [tesseract](https://github.com/tesseract-ocr
 Tassadar provides the following ocr APIs:
 
 - `get_ocr(1:binary image)`: accept image binary data, return ocr text result.
-- `line_ocr(1:bianry image)`: if you do image segmentation by yourself, you can just do ocr line by line, which gives you a more accurate result.
+- `line_ocr(1:bianry image)`: do ocr line by line.
 - `version()`: return the current version.
 
 ### Docker
