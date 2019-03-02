@@ -9,7 +9,6 @@
 #include <tesseract/baseapi.h>
 
 #include "gen-cpp/TassadarServer.h"
-#include "gen-cpp/tassadar_types.h"
 
 struct Pix;
 namespace tesseract {
@@ -46,14 +45,11 @@ class TassadarServerHandler : virtual public TassadarServerIf {
 
  protected:
   tesseract::TessBaseAPI *get_tess_api(const std::string &lang);
-  void ocr_process(std::string &_return,
-                   const std::string &image,
-                   const PageSegMode::type &psm);
 
  private:
   char *tessdata_;
   tesseract::TessBaseAPI *api_;
-  const std::string version_ = "0.1.0";
+  const std::string version_ = "0.2.0";
 };
 
 #endif
