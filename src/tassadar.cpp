@@ -27,16 +27,13 @@ tesseract::TessBaseAPI* TassadarServerHandler::get_tess_api(
   return api;
 }
 
-void TassadarServerHandler::ocr_process(std::string &_return,
-                                        const std::string &image,
-                                        const PageSegMode::type &psm) {
+void TassadarServerHandler::get_ocr(std::string &_return, const std::string &image) {
   Pix *image_pix = StringToPix(image);
   if (image_pix == NULL) {
     syslog(LOG_ERR, "PixReadMem Error.");
     return;
   }
 
-  api_->SetPageSegMode(psm_map[psm]);
   api_->SetImage(image_pix);
 
   char *out_text;
@@ -47,10 +44,31 @@ void TassadarServerHandler::ocr_process(std::string &_return,
   pixDestroy(&image_pix);
 }
 
-void TassadarServerHandler::get_ocr(std::string& _return, const std::string& image) {
-  ocr_process(_return, image, PageSegMode::PSM_SINGLE_BLOCK);
-}
-
 void TassadarServerHandler::line_ocr(std::string& _return, const std::string& image) {
-  ocr_process(_return, image, PageSegMode::PSM_SINGLE_LINE);
+  Pix *image_pix = StringToPix(image);
+  if (image_pix == NULL) {
+    syslog(LOG_ERR, "PixReadMem Error.");
+    return;
+  }
+
+  std::vector<std::string> result_lines;
+  api_->SetImage(image_pix);
+  api_->Recognize(0);
+  tesseract::ResultIterator* ri = api_->GetIterator();
+  tesseract::PageIteratorLevel level = tesseract::RIL_TEXTLINE;
+  if (ri != 0) {
+    do {
+      const char* line_text = ri->GetUTF8Text(level);
+      result_lines.push_back(line_text);
+      delete[] line_text;
+    } while (ri->Next(level));
+  }
+
+  std::string result;
+  for (std::string& line: result_lines) {
+    result += line;
+  }
+  _return = result;
+
+  pixDestroy(&image_pix);
 }
