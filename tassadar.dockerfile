@@ -35,7 +35,8 @@ RUN cd /root/ && \
         ./configure --without-qt4 --without-qt5 --without-csharp --without-erlang --without-nodejs --without-lua --without-perl --without-php --without-php_extention --without-dart --without-ruby --without-haskell --without-rs --without-haxe --without-dotnetcore --without-d && \
         make -j2 && make install
 
-RUN ${GIT_CLONE} https://github.com/shenfei/tassadar_ocr.git /root/tassadar_ocr && \
+ARG TASSADAR_VERSION="v0.2.0"
+RUN ${GIT_CLONE} --branch ${TASSADAR_VERSION} https://github.com/shenfei/tassadar_ocr.git /root/tassadar_ocr && \
         cd /root/tassadar_ocr && make
 RUN pip3 --no-cache-dir install setuptools
 RUN pip3 --no-cache-dir install -e /root/tassadar_ocr/python/
