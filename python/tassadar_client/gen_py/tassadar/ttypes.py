@@ -14,56 +14,5 @@ import sys
 
 from thrift.transport import TTransport
 all_structs = []
-
-
-class PageSegMode(object):
-    PSM_OSD_ONLY = 0
-    PSM_AUTO_OSD = 1
-    PSM_AUTO_ONLY = 2
-    PSM_AUTO = 3
-    PSM_SINGLE_COLUMN = 4
-    PSM_SINGLE_BLOCK_VERT_TEXT = 5
-    PSM_SINGLE_BLOCK = 6
-    PSM_SINGLE_LINE = 7
-    PSM_SINGLE_WORD = 8
-    PSM_CIRCLE_WORD = 9
-    PSM_SINGLE_CHAR = 10
-    PSM_SPARSE_TEXT = 11
-    PSM_SPARSE_TEXT_OSD = 12
-    PSM_COUNT = 13
-
-    _VALUES_TO_NAMES = {
-        0: "PSM_OSD_ONLY",
-        1: "PSM_AUTO_OSD",
-        2: "PSM_AUTO_ONLY",
-        3: "PSM_AUTO",
-        4: "PSM_SINGLE_COLUMN",
-        5: "PSM_SINGLE_BLOCK_VERT_TEXT",
-        6: "PSM_SINGLE_BLOCK",
-        7: "PSM_SINGLE_LINE",
-        8: "PSM_SINGLE_WORD",
-        9: "PSM_CIRCLE_WORD",
-        10: "PSM_SINGLE_CHAR",
-        11: "PSM_SPARSE_TEXT",
-        12: "PSM_SPARSE_TEXT_OSD",
-        13: "PSM_COUNT",
-    }
-
-    _NAMES_TO_VALUES = {
-        "PSM_OSD_ONLY": 0,
-        "PSM_AUTO_OSD": 1,
-        "PSM_AUTO_ONLY": 2,
-        "PSM_AUTO": 3,
-        "PSM_SINGLE_COLUMN": 4,
-        "PSM_SINGLE_BLOCK_VERT_TEXT": 5,
-        "PSM_SINGLE_BLOCK": 6,
-        "PSM_SINGLE_LINE": 7,
-        "PSM_SINGLE_WORD": 8,
-        "PSM_CIRCLE_WORD": 9,
-        "PSM_SINGLE_CHAR": 10,
-        "PSM_SPARSE_TEXT": 11,
-        "PSM_SPARSE_TEXT_OSD": 12,
-        "PSM_COUNT": 13,
-    }
 fix_spec(all_structs)
 del all_structs

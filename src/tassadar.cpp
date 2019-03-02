@@ -1,21 +1,14 @@
 #include "tassadar.hpp"
 
 #include <cstdlib>
-#include <map>
 
 #include <tesseract/baseapi.h>
 #include <leptonica/allheaders.h>
 
-#include "gen-cpp/tassadar_types.h"
 
 inline Pix *StringToPix(const std::string &image_str) {
   return pixReadMem(reinterpret_cast<const l_uint8*>(image_str.c_str()), image_str.size());
 }
-
-std::map<PageSegMode::type, tesseract::PageSegMode> psm_map = {
-  {PageSegMode::PSM_SINGLE_LINE, tesseract::PSM_SINGLE_LINE},
-  {PageSegMode::PSM_SINGLE_BLOCK, tesseract::PSM_SINGLE_BLOCK}
-};
 
 tesseract::TessBaseAPI* TassadarServerHandler::get_tess_api(
     const std::string &lang) {
