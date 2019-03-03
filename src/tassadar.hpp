@@ -50,7 +50,7 @@ class TassadarServerHandler : virtual public TassadarServerIf {
  private:
   char *tessdata_;
   tesseract::TessBaseAPI *api_;
-  const std::string version_ = "0.2.0";
+  const std::string version_ = "0.2.1";
 };
 
 #endif
