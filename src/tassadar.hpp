@@ -24,16 +24,17 @@ class TassadarServerHandler : virtual public TassadarServerIf {
       syslog(LOG_ERR, "Could not find TESSDATA_PREFIX.");
       exit(1);
     }
-    printf("Set TESSDATA to: %s\n", tessdata_);
+    syslog(LOG_INFO, "Set TESSDATA to: %s\n", tessdata_);
 
     std::string lang("chi_sim+eng");
     api_ = get_tess_api(lang);
-    printf("Tassadar init ok\n");
+    syslog(LOG_INFO, "Tassadar init ok\n");
   }
 
   ~TassadarServerHandler() {
     api_->End();
     delete api_;
+    closelog();
   }
 
   void version(std::string& _return) {
@@ -49,7 +50,7 @@ class TassadarServerHandler : virtual public TassadarServerIf {
  private:
   char *tessdata_;
   tesseract::TessBaseAPI *api_;
-  const std::string version_ = "0.2.0";
+  const std::string version_ = "0.2.1";
 };
 
 #endif
