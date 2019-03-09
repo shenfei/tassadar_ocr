@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from setuptools import setup, find_packages
 
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 
 REQS = [
     'thrift==0.11.0',
