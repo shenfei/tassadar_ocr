@@ -10,6 +10,17 @@ Tassadar provides the following ocr APIs:
 - `get_ocr(1:binary image)`: accept image binary data, return ocr text result.
 - `line_ocr(1:bianry image)`: do ocr line by line.
 - `version()`: return the current version.
+- `cut_image(1:binary image, 2:i8 cut_type)`: segment image into components in different levels:
+
+```
+0: block,
+1, paragraph,
+2, textline,
+3, word,
+4, symbol,
+```
+
+The default level is 4.
 
 ### Docker
 
