@@ -44,6 +44,9 @@ class TassadarClient(object):
         return ocr_text
 
     def cut_image(self, image, cut_type):
+        if cut_type not in [0, 1, 2, 3, 4]:
+            raise ValueError('cut_type shoud be one of range(5)')
+
         sub_images = []
         try:
             sub_images = self.client.cut_image(image, cut_type)
