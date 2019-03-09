@@ -1,4 +1,5 @@
 import argparse
+import os
 
 from .tassadar_client import TassadarClient
 
@@ -23,7 +24,7 @@ def main():
     elif args.cut:
         with open(args.input, 'rb') as fin:
             image = fin.read()
-        sub_images = client.cut_image(image)
+        sub_images = client.cut_image(image, args.cut_type)
         for i, img in enumerate(sub_images):
             out_path = os.path.join(args.output, f'{i}.png')
             with open(out_path, 'wb') as fout:

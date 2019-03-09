@@ -46,7 +46,7 @@ class TassadarClient(object):
     def cut_image(self, image, cut_type):
         sub_images = []
         try:
-            sub_images = self.client.cut_image(image)
+            sub_images = self.client.cut_image(image, cut_type)
         except Exception as e:
             print(e)
         return sub_images
