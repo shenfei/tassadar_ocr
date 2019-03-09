@@ -6,14 +6,14 @@ from .tassadar_client import TassadarClient
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--port', type=int, default=9090)
+    parser.add_argument('-p', '--port', type=int, default=9090)
     parser.add_argument('--host', default='localhost')
     parser.add_argument('--version', action='store_true')
     parser.add_argument('--line', action='store_true')
     parser.add_argument('--cut', action='store_true')
     parser.add_argument('--cut_type', type=int, default=4)
-    parser.add_argument('--input')
-    parser.add_argument('--output', default='./')
+    parser.add_argument('-i', '--input')
+    parser.add_argument('-o', '--output', default='./')
     args = parser.parse_args()
 
     client = TassadarClient(host=args.host, port=args.port)
