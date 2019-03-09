@@ -43,6 +43,7 @@ class TassadarServerHandler : virtual public TassadarServerIf {
 
   void get_ocr(std::string& _return, const std::string& image);
   void line_ocr(std::string& _return, const std::string& image);
+  void cut_image(std::vector<std::string> & _return, const std::string& image, const int8_t cut_type);
 
  protected:
   tesseract::TessBaseAPI *get_tess_api(const std::string &lang);
@@ -50,7 +51,7 @@ class TassadarServerHandler : virtual public TassadarServerIf {
  private:
   char *tessdata_;
   tesseract::TessBaseAPI *api_;
-  const std::string version_ = "0.2.1";
+  const std::string version_ = "0.3.0";
 };
 
 #endif

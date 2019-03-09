@@ -42,3 +42,11 @@ class TassadarClient(object):
         except Exception as e:
             print(e)
         return ocr_text
+
+    def cut_image(self, image, cut_type):
+        sub_images = []
+        try:
+            sub_images = self.client.cut_image(image, cut_type)
+        except Exception as e:
+            print(e)
+        return sub_images
