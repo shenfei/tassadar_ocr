@@ -24,6 +24,7 @@ class TassadarServerIf {
   virtual void version(std::string& _return) = 0;
   virtual void get_ocr(std::string& _return, const std::string& image) = 0;
   virtual void line_ocr(std::string& _return, const std::string& image) = 0;
+  virtual void cut_image(std::vector<std::string> & _return, const std::string& image, const int8_t cut_type) = 0;
 };
 
 class TassadarServerIfFactory {
@@ -60,6 +61,9 @@ class TassadarServerNull : virtual public TassadarServerIf {
     return;
   }
   void line_ocr(std::string& /* _return */, const std::string& /* image */) {
+    return;
+  }
+  void cut_image(std::vector<std::string> & /* _return */, const std::string& /* image */, const int8_t /* cut_type */) {
     return;
   }
 };
@@ -364,6 +368,117 @@ class TassadarServer_line_ocr_presult {
 
 };
 
+typedef struct _TassadarServer_cut_image_args__isset {
+  _TassadarServer_cut_image_args__isset() : image(false), cut_type(false) {}
+  bool image :1;
+  bool cut_type :1;
+} _TassadarServer_cut_image_args__isset;
+
+class TassadarServer_cut_image_args {
+ public:
+
+  TassadarServer_cut_image_args(const TassadarServer_cut_image_args&);
+  TassadarServer_cut_image_args& operator=(const TassadarServer_cut_image_args&);
+  TassadarServer_cut_image_args() : image(), cut_type(0) {
+  }
+
+  virtual ~TassadarServer_cut_image_args() throw();
+  std::string image;
+  int8_t cut_type;
+
+  _TassadarServer_cut_image_args__isset __isset;
+
+  void __set_image(const std::string& val);
+
+  void __set_cut_type(const int8_t val);
+
+  bool operator == (const TassadarServer_cut_image_args & rhs) const
+  {
+    if (!(image == rhs.image))
+      return false;
+    if (!(cut_type == rhs.cut_type))
+      return false;
+    return true;
+  }
+  bool operator != (const TassadarServer_cut_image_args &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const TassadarServer_cut_image_args & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+
+class TassadarServer_cut_image_pargs {
+ public:
+
+
+  virtual ~TassadarServer_cut_image_pargs() throw();
+  const std::string* image;
+  const int8_t* cut_type;
+
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _TassadarServer_cut_image_result__isset {
+  _TassadarServer_cut_image_result__isset() : success(false) {}
+  bool success :1;
+} _TassadarServer_cut_image_result__isset;
+
+class TassadarServer_cut_image_result {
+ public:
+
+  TassadarServer_cut_image_result(const TassadarServer_cut_image_result&);
+  TassadarServer_cut_image_result& operator=(const TassadarServer_cut_image_result&);
+  TassadarServer_cut_image_result() {
+  }
+
+  virtual ~TassadarServer_cut_image_result() throw();
+  std::vector<std::string>  success;
+
+  _TassadarServer_cut_image_result__isset __isset;
+
+  void __set_success(const std::vector<std::string> & val);
+
+  bool operator == (const TassadarServer_cut_image_result & rhs) const
+  {
+    if (!(success == rhs.success))
+      return false;
+    return true;
+  }
+  bool operator != (const TassadarServer_cut_image_result &rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const TassadarServer_cut_image_result & ) const;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(::apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+typedef struct _TassadarServer_cut_image_presult__isset {
+  _TassadarServer_cut_image_presult__isset() : success(false) {}
+  bool success :1;
+} _TassadarServer_cut_image_presult__isset;
+
+class TassadarServer_cut_image_presult {
+ public:
+
+
+  virtual ~TassadarServer_cut_image_presult() throw();
+  std::vector<std::string> * success;
+
+  _TassadarServer_cut_image_presult__isset __isset;
+
+  uint32_t read(::apache::thrift::protocol::TProtocol* iprot);
+
+};
+
 class TassadarServerClient : virtual public TassadarServerIf {
  public:
   TassadarServerClient(apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> prot) {
@@ -398,6 +513,9 @@ class TassadarServerClient : virtual public TassadarServerIf {
   void line_ocr(std::string& _return, const std::string& image);
   void send_line_ocr(const std::string& image);
   void recv_line_ocr(std::string& _return);
+  void cut_image(std::vector<std::string> & _return, const std::string& image, const int8_t cut_type);
+  void send_cut_image(const std::string& image, const int8_t cut_type);
+  void recv_cut_image(std::vector<std::string> & _return);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;
@@ -416,12 +534,14 @@ class TassadarServerProcessor : public ::apache::thrift::TDispatchProcessor {
   void process_version(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_get_ocr(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
   void process_line_ocr(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
+  void process_cut_image(int32_t seqid, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, void* callContext);
  public:
   TassadarServerProcessor(::apache::thrift::stdcxx::shared_ptr<TassadarServerIf> iface) :
     iface_(iface) {
     processMap_["version"] = &TassadarServerProcessor::process_version;
     processMap_["get_ocr"] = &TassadarServerProcessor::process_get_ocr;
     processMap_["line_ocr"] = &TassadarServerProcessor::process_line_ocr;
+    processMap_["cut_image"] = &TassadarServerProcessor::process_cut_image;
   }
 
   virtual ~TassadarServerProcessor() {}
@@ -480,6 +600,16 @@ class TassadarServerMultiface : virtual public TassadarServerIf {
     return;
   }
 
+  void cut_image(std::vector<std::string> & _return, const std::string& image, const int8_t cut_type) {
+    size_t sz = ifaces_.size();
+    size_t i = 0;
+    for (; i < (sz - 1); ++i) {
+      ifaces_[i]->cut_image(_return, image, cut_type);
+    }
+    ifaces_[i]->cut_image(_return, image, cut_type);
+    return;
+  }
+
 };
 
 // The 'concurrent' client is a thread safe client that correctly handles
@@ -519,6 +649,9 @@ class TassadarServerConcurrentClient : virtual public TassadarServerIf {
   void line_ocr(std::string& _return, const std::string& image);
   int32_t send_line_ocr(const std::string& image);
   void recv_line_ocr(std::string& _return, const int32_t seqid);
+  void cut_image(std::vector<std::string> & _return, const std::string& image, const int8_t cut_type);
+  int32_t send_cut_image(const std::string& image, const int8_t cut_type);
+  void recv_cut_image(std::vector<std::string> & _return, const int32_t seqid);
  protected:
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> piprot_;
   apache::thrift::stdcxx::shared_ptr< ::apache::thrift::protocol::TProtocol> poprot_;

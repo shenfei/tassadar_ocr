@@ -1,13 +1,38 @@
 #include "tassadar.hpp"
 
 #include <cstdlib>
+#include <map>
 
 #include <tesseract/baseapi.h>
 #include <leptonica/allheaders.h>
 
+std::map<int8_t, tesseract::PageIteratorLevel> CUT_LEVEL_MAP = {
+  {0, tesseract::RIL_BLOCK},
+  {1, tesseract::RIL_PARA},
+  {2, tesseract::RIL_TEXTLINE},
+  {3, tesseract::RIL_WORD},
+  {4, tesseract::RIL_SYMBOL}
+};
+
 
 inline Pix *StringToPix(const std::string &image_str) {
   return pixReadMem(reinterpret_cast<const l_uint8*>(image_str.c_str()), image_str.size());
+}
+
+inline std::string PixToString(Pix *pix) {
+  l_uint8 *data = NULL;
+  size_t size = 0;
+  if (pixWriteMem(&data, &size, pix, IFF_PNG) != 0) {
+    syslog(LOG_ERR, "error on PixToString");
+    return "";
+  }
+  std::string res;
+  res.resize(size);
+  for (size_t i = 0; i < size; ++i) {
+    res[i] = data[i];
+  }
+  free(data);
+  return res;
 }
 
 tesseract::TessBaseAPI* TassadarServerHandler::get_tess_api(
@@ -63,5 +88,26 @@ void TassadarServerHandler::line_ocr(std::string& _return, const std::string& im
   }
   _return = result;
 
+  pixDestroy(&image_pix);
+}
+
+void TassadarServerHandler::cut_image(std::vector<std::string> & _return,
+                                      const std::string& image, const int8_t cut_type) {
+  Pix *image_pix = StringToPix(image);
+  if (image_pix == NULL) {
+    syslog(LOG_ERR, "PixReadMem Error.");
+    return;
+  }
+  api_->SetImage(image_pix);
+  Pixa* pixa = pixaCreate(1);
+  tesseract::PageIteratorLevel level = CUT_LEVEL_MAP[cut_type];
+  Boxa* boxes = api_->GetComponentImages(level, true, true, 1, &pixa, NULL, NULL);
+  for (auto i = 0; i < pixa->n; ++i) {
+    Pix* component_pix = pixaGetPix(pixa, i, L_CLONE);
+    _return.push_back(PixToString(component_pix));
+    pixDestroy(&component_pix);
+  }
+  boxaDestroy(&boxes);
+  pixaDestroy(&pixa);
   pixDestroy(&image_pix);
 }
