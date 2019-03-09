@@ -16,7 +16,11 @@ std::map<int8_t, tesseract::PageIteratorLevel> CUT_LEVEL_MAP = {
 
 
 inline Pix *StringToPix(const std::string &image_str) {
-  return pixReadMem(reinterpret_cast<const l_uint8*>(image_str.c_str()), image_str.size());
+  Pix* image_pix = pixReadMem(reinterpret_cast<const l_uint8*>(image_str.c_str()), image_str.size());
+  if (image_pix == NULL) {
+    syslog(LOG_ERR, "PixReadMem Error.");
+  }
+  return image_pix;
 }
 
 inline std::string PixToString(Pix *pix) {
@@ -48,7 +52,6 @@ tesseract::TessBaseAPI* TassadarServerHandler::get_tess_api(
 void TassadarServerHandler::get_ocr(std::string &_return, const std::string &image) {
   Pix *image_pix = StringToPix(image);
   if (image_pix == NULL) {
-    syslog(LOG_ERR, "PixReadMem Error.");
     return;
   }
 
@@ -65,7 +68,6 @@ void TassadarServerHandler::get_ocr(std::string &_return, const std::string &ima
 void TassadarServerHandler::line_ocr(std::string& _return, const std::string& image) {
   Pix *image_pix = StringToPix(image);
   if (image_pix == NULL) {
-    syslog(LOG_ERR, "PixReadMem Error.");
     return;
   }
 
@@ -95,7 +97,6 @@ void TassadarServerHandler::cut_image(std::vector<std::string> & _return,
                                       const std::string& image, const int8_t cut_type) {
   Pix *image_pix = StringToPix(image);
   if (image_pix == NULL) {
-    syslog(LOG_ERR, "PixReadMem Error.");
     return;
   }
   api_->SetImage(image_pix);
