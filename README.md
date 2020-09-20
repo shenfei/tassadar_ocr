@@ -25,13 +25,13 @@ The default level is 4.
 ### Docker
 
 The recommended way to use tassadar is through docker.
-You can either choose a pre-build image from docker hub: `mathehacker/tassadar_ocr:latest`, or build a new one with [dockerfile](https://github.com/shenfei/tassadar_ocr/blob/master/tassadar.dockerfile).
+You can either choose a pre-build image from docker hub: `fshen/tassadar_ocr:latest`, or build a new one with [dockerfile](https://github.com/shenfei/tassadar_ocr/blob/master/tassadar.dockerfile).
 
 Quick start:
 
 ```shell
-docker pull mathehacker/tassadar_ocr:latest
-docker tag mathehacker/tassadar_ocr:latest tassadar
+docker pull fshen/tassadar_ocr:latest
+docker tag fshen/tassadar_ocr:latest tassadar
 
 # get the ocr result of $WORK_DIR/IMAGE_PATH
 docker run -it -d --rm --name ocr -p 9090:9090 -v $WORK_DIR:/app tassadar /root/tassadar_ocr/tassadar_server
